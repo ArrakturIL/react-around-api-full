@@ -1,0 +1,15 @@
+.edit-form__heading {
+    font-style: normal;
+    font-weight: 900;
+    font-size: 24px;
+    line-height: 29px;
+    color: #000000;
+    margin: 0;
+}
+
+@media screen and (max-width: 425px) {
+    .edit-form__heading {
+        font-size: 18px;
+        line-height: 22px;
+    }
+}

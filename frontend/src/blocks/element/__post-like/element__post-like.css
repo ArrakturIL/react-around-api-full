@@ -1,0 +1,15 @@
+.element__post-like {
+    padding: 0;
+    background: url(../../../images/like.svg);
+    border: none;
+    max-width: 21px;
+    height: 19px;
+    align-self: center;
+    transition: opacity 0.2s linear;
+    width: 100%;
+    cursor: pointer;
+}
+
+.element__post-like:hover {
+    opacity: 0.5;
+}

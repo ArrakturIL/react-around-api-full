@@ -1,0 +1,9 @@
+.auth-page__input-error {
+  color: red;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.25;
+  margin-top: 5px;
+  min-height: 30px;
+  visibility: hidden;
+}

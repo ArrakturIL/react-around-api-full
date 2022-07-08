@@ -1,0 +1,7 @@
+.element__post-info {
+    display: flex;
+    flex-direction: row;
+    padding: 25px 15px 31px 21px;
+    max-width: 246px;
+    justify-content: space-between;
+}

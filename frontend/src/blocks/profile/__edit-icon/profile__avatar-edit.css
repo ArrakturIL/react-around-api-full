@@ -1,0 +1,9 @@
+.profile__avatar-edit {
+    cursor: pointer;
+    width: 26px;
+    height: 26px;
+    background: url(../../../images/avatar_edit.svg);
+    padding: 0;
+    border: none;
+    align-self: center;
+}

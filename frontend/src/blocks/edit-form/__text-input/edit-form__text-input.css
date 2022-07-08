@@ -1,0 +1,31 @@
+.edit-form__text-input {
+    padding: 0 0 13px;
+    max-width: 358px;
+    border: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    font-size: 14px;
+    line-height: 17px;
+    color: #000000;
+}
+
+/*.edit-form__text-input:first-of-type {
+    margin: 54px 0 30px;
+}*/
+
+.edit-form__text-input:last-of-type {
+    margin: 0 0 48px;
+}
+
+@media screen and (max-width: 425px) {
+    .edit-form__text-input {
+        max-width: 238px;
+        padding: 0 0 9px;
+    }
+    .edit-form__text-input:first-of-type {
+        margin: 76px 0 30px;
+    }
+    
+    .edit-form__text-input:last-of-type {
+        margin: 0 0 46px;
+    }    
+}

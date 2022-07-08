@@ -1,0 +1,9 @@
+.edit-form {
+    margin: 34px 36px 36px;
+}
+
+@media screen and (max-width: 425px) {
+    .edit-form {
+        margin: 25px 22px;
+    }
+}
