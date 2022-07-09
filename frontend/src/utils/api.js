@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 class Api extends React.Component {
   constructor(props) {
@@ -26,7 +26,7 @@ class Api extends React.Component {
 
   createCard(data) {
     return this._customFetch(`${this._baseUrl}/cards`, {
-      method: "POST",
+      method: 'POST',
       headers: this._headers,
       body: JSON.stringify(data),
     });
@@ -34,14 +34,14 @@ class Api extends React.Component {
 
   deleteCard(cardId) {
     return this._customFetch(`${this._baseUrl}/cards/${cardId}`, {
-      method: "DELETE",
+      method: 'DELETE',
       headers: this._headers,
     });
   }
 
   updateUserInfo({ name, about }) {
     return this._customFetch(`${this._baseUrl}/users/me`, {
-      method: "PATCH",
+      method: 'PATCH',
       headers: this._headers,
       body: JSON.stringify({
         name,
@@ -50,9 +50,9 @@ class Api extends React.Component {
     });
   }
 
-  updateAvatar({avatar}) {
+  updateAvatar({ avatar }) {
     return this._customFetch(`${this._baseUrl}/users/me/avatar`, {
-      method: "PATCH",
+      method: 'PATCH',
       headers: this._headers,
       body: JSON.stringify({
         avatar,
@@ -62,17 +62,20 @@ class Api extends React.Component {
 
   changeLikeCardStatus(cardId, isLiked) {
     return this._customFetch(`${this._baseUrl}/cards/likes/${cardId}`, {
-      method: `${isLiked ? "DELETE" : "PUT"}`,
+      method: `${isLiked ? 'DELETE' : 'PUT'}`,
       headers: this._headers,
     });
+  }
+  updateToken(token) {
+    this._headers.Authorization = `Bearer ${token}`;
   }
 }
 
 const api = new Api({
-  baseUrl: "https://around.nomoreparties.co/v1/group-12",
+  baseUrl: 'https://api.around-the-us.students.nomoredomainssbs.ru/',
   headers: {
-    authorization: "32f9436c-0893-4974-9272-aec5c5f4dcc9",
-    "Content-Type": "application/json",
+    authorization: `Bearer ${localStorage.getItem('jwt')}`,
+    'Content-Type': 'application/json',
   },
 });
 

@@ -53,36 +53,26 @@ function App() {
   /* ========================================================================== */
 
   useEffect(() => {
-    const getUserInfoFromAPI = () => {
-      return api.getUserInfo();
-    };
-    const getUserInfoFromToken = () => {
-      const jwt = localStorage.getItem('jwt');
-      if (jwt) return auth.getContent(jwt);
-    };
-    Promise.allSettled([getUserInfoFromAPI(), getUserInfoFromToken()])
-      .then((values) => {
-        const apiUserInfo = values[0].value;
-        const tokenUserInfo = values[1].value?.data;
-        setCurrentUser({ ...tokenUserInfo, ...apiUserInfo });
-        if (tokenUserInfo) setIsLoggedIn(true);
-        navigate('/');
-      })
-      .catch((err) => console.log(`Error: ${err}`));
-    // eslint-disable-next-line
-  }, []);
-  // ========================================================================== //
-
-  useEffect(() => {
     api
       .getInitialCards()
-      .then((cardsData) => {
-        setCards(cardsData);
+      .then((cards) => {
+        cards.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        setCards(cards);
       })
-      .catch((err) => {
-        console.log(`Error: ${err}`);
-      });
-  }, []);
+      .catch((err) => console.log(err));
+
+    const jwt = localStorage.getItem('jwt');
+    if (jwt) {
+      auth
+        .getContent(jwt)
+        .then((user) => {
+          setCurrentUser(user);
+          setIsLoggedIn(true);
+          navigate('/');
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [navigate]);
 
   // ========================================================================== //
   const handlePopupClick = (e) => {
@@ -262,10 +252,12 @@ function App() {
     setIsLoading(true);
     auth
       .authorize({ email, password })
-      .then((user) => {
+      .then(async (user) => {
         localStorage.setItem('jwt', user.token);
+        const loggedUser = await auth.getContent(user.token);
+        api.updateToken(user.token);
         setIsLoggedIn(true);
-        setCurrentUser({ ...currentUser, email });
+        setCurrentUser(loggedUser);
         navigate('/');
       })
       .catch((err) => {
@@ -340,7 +332,7 @@ function App() {
   /* ========================================================================== */
 
   return (
-    <div className="page">
+    <div className='page'>
       <CurrentUserContext.Provider value={currentUser}>
         <InfoTooltip
           isOpen={isAuthOkPopupOpen}
@@ -407,13 +399,13 @@ function App() {
 
         <Routes>
           <Route
-            path="/signin"
+            path='/signin'
             element={
               <Login isLoading={isLoading} onSubmit={handleLogin} isLoggedIn />
             }
           />
           <Route
-            path="/signup"
+            path='/signup'
             element={
               <Register
                 isLoading={isLoading}
@@ -423,9 +415,9 @@ function App() {
             }
           />
           <Route
-            path="/"
+            path='/'
             element={
-              <ProtectedRoute redirectPath="/signin" isLoggedIn={isLoggedIn}>
+              <ProtectedRoute redirectPath='/signin' isLoggedIn={isLoggedIn}>
                 <Main
                   onEditProfileClick={handleEditProfileClick}
                   onAddPlaceClick={handleAddPlaceClick}
@@ -439,7 +431,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route path="*" element={<Navigate to="/" />} />
+          <Route path='*' element={<Navigate to='/' />} />
         </Routes>
 
         <Footer />
