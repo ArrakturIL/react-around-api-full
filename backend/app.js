@@ -2,9 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const helmet = require('helmet');
 const bodyParser = require('body-parser');
-const {
-  celebrate, Joi, errors, isCelebrateError,
-} = require('celebrate');
+const { celebrate, Joi, errors, isCelebrateError } = require('celebrate');
 const cors = require('cors');
 const { createUser, login } = require('./controllers/users');
 const auth = require('./middlewares/auth');
@@ -21,7 +19,7 @@ app.use(helmet());
 
 mongoose.connect('mongodb://localhost:27017/arounddb');
 
-const { PORT = 3000 } = process.env;
+const { PORT = 3000, NODE_ENV } = process.env;
 
 app.use(cors());
 app.options('*', cors());
@@ -35,7 +33,7 @@ app.get('/crash-test', () => {
   setTimeout(() => {
     throw new Error('Server will crash now');
   }, 0);
-}); 
+});
 
 app.post(
   '/signin',
@@ -45,7 +43,7 @@ app.post(
       password: Joi.string().required().min(8),
     }),
   }),
-  login,
+  login
 );
 app.post(
   '/signup',
@@ -55,7 +53,7 @@ app.post(
       password: Joi.string().required().min(8),
     }),
   }),
-  createUser,
+  createUser
 );
 
 app.use('/', auth, userRouter);
