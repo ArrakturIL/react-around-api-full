@@ -16,6 +16,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "deploy": "npm run build && scp -r ./build/* around-the-us.students.nomoredomainssbs.ru:/home/arrakturil/react-around-api-full/frontend",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
