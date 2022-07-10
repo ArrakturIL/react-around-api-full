@@ -62,6 +62,7 @@ function App() {
       .catch((err) => console.log(err));
 
     const jwt = localStorage.getItem('jwt');
+
     if (jwt) {
       auth
         .getContent(jwt)
