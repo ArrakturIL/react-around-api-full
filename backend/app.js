@@ -1,7 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const helmet = require('helmet');
-const bodyParser = require('body-parser');
 const { celebrate, Joi, errors, isCelebrateError } = require('celebrate');
 const cors = require('cors');
 const { createUser, login } = require('./controllers/users');
@@ -10,22 +9,18 @@ const BadRequestErr = require('./errors/bad-request-err');
 const NotFoundErr = require('./errors/not-found-err');
 require('dotenv').config();
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-
+const { PORT = 3000, NODE_ENV } = process.env;
 const userRouter = require('./routes/users');
 const cardRouter = require('./routes/cards');
 
 const app = express();
+
+mongoose.connect('mongodb://0.0.0.0:27017/arounddb');
+
 app.use(helmet());
-
-mongoose.connect('mongodb://localhost:27017/arounddb');
-
-const { PORT = 3000, NODE_ENV } = process.env;
-
 app.use(cors());
 app.options('*', cors());
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
 
 app.use(requestLogger);
 
