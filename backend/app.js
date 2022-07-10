@@ -7,7 +7,7 @@ const BadRequestErr = require('./errors/bad-request-err');
 const NotFoundErr = require('./errors/not-found-err');
 require('dotenv').config();
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-const { PORT = 8080, NODE_ENV } = process.env;
+const { PORT = 3000, NODE_ENV } = process.env;
 const userRouter = require('./routes/users');
 const cardRouter = require('./routes/cards');
 
