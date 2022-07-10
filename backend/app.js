@@ -1,10 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const helmet = require('helmet');
-const { celebrate, Joi, errors, isCelebrateError } = require('celebrate');
+const { errors, isCelebrateError } = require('celebrate');
 const cors = require('cors');
-const { createUser, login } = require('./controllers/users');
-const auth = require('./middlewares/auth');
 const BadRequestErr = require('./errors/bad-request-err');
 const NotFoundErr = require('./errors/not-found-err');
 require('dotenv').config();
@@ -30,29 +28,7 @@ app.get('/crash-test', () => {
   }, 0);
 });
 
-app.post(
-  '/signin',
-  celebrate({
-    body: Joi.object().keys({
-      email: Joi.string().required().email(),
-      password: Joi.string().required().min(8),
-    }),
-  }),
-  login
-);
-app.post(
-  '/signup',
-  celebrate({
-    body: Joi.object().keys({
-      email: Joi.string().required().email(),
-      password: Joi.string().required().min(8),
-    }),
-  }),
-  createUser
-);
-
-app.use('/', auth, userRouter);
-app.use('/', auth, cardRouter);
+app.use('/', userRouter, cardRouter);
 
 app.get('*', () => {
   throw new NotFoundErr('Page not found');

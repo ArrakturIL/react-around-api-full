@@ -1,44 +1,30 @@
-const express = require('express');
-const validator = require('validator');
-const { celebrate, Joi } = require('celebrate');
+const router = require('express').Router();
 const auth = require('../middlewares/auth');
-
-const router = express.Router();
 const {
   getUsers,
   getCurrentUser,
+  createUser,
   updateUserProfile,
   updateUserAvatar,
+  login,
 } = require('../controllers/users');
-
-function validateUrl(string) {
-  if (!validator.isURL(string)) {
-    throw new Error('Invalid URL');
-  }
-  return string;
-}
+const {
+  createUserSchema,
+  loginUserSchema,
+  updateUserSchema,
+  updateUserAvatarSchema,
+} = require('./validation/schemas');
 
 router.get('/users', auth, getUsers);
 router.get('/users/me', auth, getCurrentUser);
-router.patch(
-  '/users/me',
-  celebrate({
-    body: Joi.object().keys({
-      name: Joi.string().required().min(2).max(30),
-      about: Joi.string().required().min(2),
-      avatar: Joi.string().custom(validateUrl),
-    }),
-  }),
-  updateUserProfile,
-);
+router.post('/signup', createUserSchema, createUser);
+router.post('/signin', loginUserSchema, login);
+router.patch('/users/me', auth, updateUserSchema, updateUserProfile);
 router.patch(
   '/users/me/avatar',
-  celebrate({
-    body: Joi.object().keys({
-      avatar: Joi.string().custom(validateUrl),
-    }),
-  }),
-  updateUserAvatar,
+  auth,
+  updateUserAvatarSchema,
+  updateUserAvatar
 );
 
 module.exports = router;

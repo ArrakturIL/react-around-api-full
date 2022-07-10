@@ -1,9 +1,6 @@
-const express = require('express');
-const { celebrate, Joi } = require('celebrate');
-const validator = require('validator');
+const router = require('express').Router();
 const auth = require('../middlewares/auth');
 
-const router = express.Router();
 const {
   getCards,
   createCard,
@@ -12,53 +9,12 @@ const {
   dislikeCard,
 } = require('../controllers/cards');
 
-function validateUrl(string) {
-  if (!validator.isURL(string)) {
-    throw new Error('Invalid URL');
-  }
-  return string;
-}
+const { createCardSchema, cardIdSchema } = require('./validation/schemas');
 
-router.get('/cards', auth, getCards);
-router.post(
-  '/cards',
-  celebrate({
-    body: Joi.object().keys({
-      name: Joi.string().required().min(2).max(30),
-      link: Joi.string().required().custom(validateUrl),
-    }),
-  }),
-  createCard,
-);
-router.delete(
-  '/cards/:cardId',
-  celebrate({
-    params: Joi.object()
-      .keys({
-        cardId: Joi.string().hex().length(24),
-      })
-      .unknown(true),
-  }),
-  deleteCard,
-);
-router.put(
-  '/cards/:cardId/likes',
-  celebrate({
-    params: Joi.object().keys({
-      cardId: Joi.string().hex().length(24).required(),
-    }),
-  }),
-  likeCard,
-);
-
-router.delete(
-  '/cards/:cardId/likes',
-  celebrate({
-    params: Joi.object().keys({
-      cardId: Joi.string().hex().length(24).required(),
-    }),
-  }),
-  dislikeCard,
-);
+router.get('/cards', getCards);
+router.post('/cards', auth, createCardSchema, createCard);
+router.delete('/cards/:cardId', auth, cardIdSchema, deleteCard);
+router.put('/cards/:cardId/likes', auth, cardIdSchema, likeCard);
+router.delete('/cards/:cardId/likes', auth, cardIdSchema, dislikeCard);
 
 module.exports = router;
