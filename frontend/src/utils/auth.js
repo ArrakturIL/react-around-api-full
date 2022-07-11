@@ -1,4 +1,5 @@
-const BASE_URL = 'https://api.around-the-us.students.nomoredomainssbs.ru';
+const BASE_URL =
+  'https://api.around-the-us.students.nomoredomainssbs.ru'; /*'http://localhost:8080'*/
 
 const handleResponse = (res) =>
   res.ok ? res.json() : Promise.reject(`Error: ${res.status}`);

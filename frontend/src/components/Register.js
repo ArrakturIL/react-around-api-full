@@ -36,25 +36,25 @@ const Register = (props) => {
   }, [isLoggedIn]);
 
   return (
-    <div className="auth-page">
-      <h1 className="auth-page__title">Sign up</h1>
+    <div className='auth-page'>
+      <h1 className='auth-page__title'>Sign up</h1>
       <form
         className={`auth-page__form`}
-        name="register"
+        name='register'
         onSubmit={handleSubmit}
       >
         {/* <fieldset className="auth-page__fieldset"> */}
         <input
           className={`auth-page__input`}
-          id="email-input"
-          type="email"
-          name="emailInput"
-          placeholder="Email"
+          id='email-input'
+          type='email'
+          name='emailInput'
+          placeholder='Email'
           value={values.emailInput || ''}
           onChange={handleChange}
           required
-          minLength="2"
-          maxLength="40"
+          minLength='2'
+          maxLength='40'
         />
         <span
           className={`auth-page__input-error ${
@@ -66,15 +66,15 @@ const Register = (props) => {
 
         <input
           className={`auth-page__input`}
-          id="password-input"
-          type="password"
-          name="passwordInput"
-          placeholder="Password"
+          id='password-input'
+          type='password'
+          name='passwordInput'
+          placeholder='Password'
           value={values.passwordInput || ''}
           onChange={handleChange}
           required
-          minLength="4"
-          maxLength="200"
+          minLength='8'
+          maxLength='200'
         />
         <span
           className={`auth-page__input-error ${
@@ -88,14 +88,14 @@ const Register = (props) => {
           className={`auth-page__submit-btn ${
             !isValid ? 'auth-page__submit-btn_disabled' : ''
           }`}
-          type="submit"
+          type='submit'
           disabled={!isValid}
         >
           {isLoading ? 'Signing you up...' : 'Sign up'}
         </button>
         {/* </fieldset> */}
-        <div className="auth-page__info">
-          <Link to="/signin" className="auth-page__link">
+        <div className='auth-page__info'>
+          <Link to='/signin' className='auth-page__link'>
             Already a member? Log in here!
           </Link>
         </div>

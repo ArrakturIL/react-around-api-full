@@ -100,7 +100,9 @@ function App() {
       isAddPlaceOpen ||
       isEditAvatarOpen ||
       isConfirmDeletePopupOpen ||
-      cardPopup
+      cardPopup ||
+      isAuthOkPopupOpen ||
+      isAuthErrorPopupOpen
     ) {
       document.addEventListener('keydown', handleEscClose);
     }
@@ -113,6 +115,8 @@ function App() {
     isEditAvatarOpen,
     isConfirmDeletePopupOpen,
     cardPopup,
+    isAuthOkPopupOpen,
+    isAuthErrorPopupOpen,
   ]);
 
   //==========================================================================//
@@ -134,8 +138,7 @@ function App() {
   /* =                            API FUNCTIONS                               = */
   /* ========================================================================== */
 
-  function handleCardLike(card) {
-    const isLiked = card.likes.some((user) => user._id === currentUser._id);
+  function handleCardLike(card, isLiked) {
     api
       .changeLikeCardStatus(card._id, isLiked)
       .then((newCard) => {

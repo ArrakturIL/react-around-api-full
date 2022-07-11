@@ -37,20 +37,20 @@ const Login = (props) => {
   }, [isLoggedIn]);
 
   return (
-    <div className="auth-page">
-      <h1 className="auth-page__title">Log in</h1>
-      <form className={`auth-page__form`} name="signin" onSubmit={handleSubmit}>
+    <div className='auth-page'>
+      <h1 className='auth-page__title'>Log in</h1>
+      <form className={`auth-page__form`} name='signin' onSubmit={handleSubmit}>
         <input
           className={`auth-page__input`}
-          id="email-input"
-          type="email"
-          name="emailInput"
-          placeholder="Email"
+          id='email-input'
+          type='email'
+          name='emailInput'
+          placeholder='Email'
           value={values.emailInput || ''}
           onChange={handleChange}
           required
-          minLength="2"
-          maxLength="40"
+          minLength='2'
+          maxLength='40'
         />
 
         <span
@@ -63,15 +63,15 @@ const Login = (props) => {
 
         <input
           className={`auth-page__input`}
-          id="password-input"
-          type="password"
-          name="passwordInput"
-          placeholder="Password"
+          id='password-input'
+          type='password'
+          name='passwordInput'
+          placeholder='Password'
           value={values.passwordInput || ''}
           onChange={handleChange}
           required
-          minLength="4"
-          maxLength="200"
+          minLength='8'
+          maxLength='200'
         />
 
         <span
@@ -83,20 +83,17 @@ const Login = (props) => {
         </span>
 
         <button
-           className={`auth-page__submit-btn ${
+          className={`auth-page__submit-btn ${
             !isValid ? 'auth-page__submit-btn_disabled' : ''
           }`}
-          type="submit"
+          type='submit'
           disabled={!isValid}
         >
           {isLoading ? 'Logging you in...' : 'Log in'}
         </button>
 
-        <div className="auth-page__info">
-          <Link
-            to="/signup"
-            className="auth-page__link"
-          >
+        <div className='auth-page__info'>
+          <Link to='/signup' className='auth-page__link'>
             Not a member yet? Sign up here!
           </Link>
         </div>
