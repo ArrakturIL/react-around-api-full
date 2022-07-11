@@ -7,18 +7,22 @@ const BadRequestErr = require('./errors/bad-request-err');
 const NotFoundErr = require('./errors/not-found-err');
 require('dotenv').config();
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+const bodyParser = require('body-parser');
 const { PORT = 3000, NODE_ENV } = process.env;
 const userRouter = require('./routes/users');
 const cardRouter = require('./routes/cards');
 
 const app = express();
 
-mongoose.connect('mongodb://0.0.0.0:27017/arounddb');
+mongoose.connect('mongodb://0.0.0.0:27017/arounddb', {
+  useNewUrlParser: true,
+});
 
 app.use(helmet());
 app.use(cors());
 app.options('*', cors());
-app.use(express.json());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(requestLogger);
 
