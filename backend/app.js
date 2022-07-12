@@ -5,9 +5,9 @@ const helmet = require('helmet');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const rateLimit = require('express-rate-limit');
-const { errors, isCelebrateError } = require('celebrate');
+const { errors } = require('celebrate');
+const errorhandler = require('./middlewares/errorhandler');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-const BadRequestErr = require('./errors/bad-request-err');
 const NotFoundErr = require('./errors/not-found-err');
 const userRouter = require('./routes/users');
 const cardRouter = require('./routes/cards');
@@ -27,7 +27,6 @@ mongoose.connect('mongodb://0.0.0.0:27017/arounddb', {
   useNewUrlParser: true,
 });
 
-app.use(limiter);
 app.use(helmet());
 app.use(cors());
 app.options('*', cors());
@@ -35,6 +34,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(requestLogger);
+
+app.use(limiter);
 
 app.get('/crash-test', () => {
   setTimeout(() => {
@@ -52,15 +53,7 @@ app.use(errorLogger);
 
 app.use(errors());
 
-app.use((err, req, res, next) => {
-  if (isCelebrateError(err)) {
-    throw new BadRequestErr('Request canot be processed');
-  }
-  res.status(err.statusCode).send({
-    message: err.statusCode === 500 ? 'Internal server error' : err.message,
-  });
-  next();
-});
+app.use(errorhandler);
 
 app.listen(PORT, () => {
   console.log(`Server is listening on port ${PORT}`);

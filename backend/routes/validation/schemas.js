@@ -17,7 +17,7 @@ const createCardSchema = celebrate({
 
 const cardIdSchema = celebrate({
   params: Joi.object().keys({
-    cardId: Joi.string().length(24).required(),
+    cardId: Joi.string().hex().length(24).required(),
   }),
 });
 
