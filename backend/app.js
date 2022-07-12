@@ -1,23 +1,33 @@
 const express = require('express');
+require('dotenv').config();
 const mongoose = require('mongoose');
 const helmet = require('helmet');
-const { errors, isCelebrateError } = require('celebrate');
+const bodyParser = require('body-parser');
 const cors = require('cors');
+const rateLimit = require('express-rate-limit');
+const { errors, isCelebrateError } = require('celebrate');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 const BadRequestErr = require('./errors/bad-request-err');
 const NotFoundErr = require('./errors/not-found-err');
-require('dotenv').config();
-const { requestLogger, errorLogger } = require('./middlewares/logger');
-const bodyParser = require('body-parser');
-const { PORT = 3000, NODE_ENV } = process.env;
 const userRouter = require('./routes/users');
 const cardRouter = require('./routes/cards');
 
+const { PORT = 3000 } = process.env;
+
 const app = express();
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  standadHeaders: true,
+  legacyHeaders: false,
+});
 
 mongoose.connect('mongodb://0.0.0.0:27017/arounddb', {
   useNewUrlParser: true,
 });
 
+app.use(limiter);
 app.use(helmet());
 app.use(cors());
 app.options('*', cors());

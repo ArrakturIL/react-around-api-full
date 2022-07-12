@@ -7,7 +7,6 @@ function Card({ onCardClick, card, onConfirmDeleteClick, onCardLike }) {
   const isOwn = currentUser._id === card.owner;
 
   const isLiked = card.likes.some((id) => id === currentUser._id);
-  console.log(isLiked);
   const likeButtonClassName = `element__post-like${
     isLiked ? ' element__post-like_active' : ''
   }`;

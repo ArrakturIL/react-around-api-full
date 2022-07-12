@@ -24,7 +24,7 @@ router.patch(
   '/users/me/avatar',
   auth,
   updateUserAvatarSchema,
-  updateUserAvatar
+  updateUserAvatar,
 );
 
 module.exports = router;

@@ -14,8 +14,7 @@ const createCard = (req, res, next) => {
   Card.create({ name, link, owner: req.user._id })
     .then((newCard) => res.status(200).send(newCard))
     .catch((err) => {
-      if (err.name === 'ValidationError')
-        next(new BadRequestErr('Validation failed. Check your request.'));
+      if (err.name === 'ValidationError') next(new BadRequestErr('Validation failed. Check your request.'));
       else next(err);
     });
 };
@@ -37,35 +36,33 @@ const deleteCard = (req, res, next) => {
     });
 };
 
-const likeCard = (req, res, next) =>
-  Card.findByIdAndUpdate(
-    req.params.cardId,
-    { $addToSet: { likes: req.user._id } },
-    { new: true }
-  )
-    .orFail(() => {
-      throw new NotFoundErr('The requested card was not found');
-    })
-    .then((card) => res.status(200).send(card))
-    .catch((err) => {
-      if (err.name === 'CastError') next(new BadRequestErr('Invalid data'));
-      else next(err);
-    });
+const likeCard = (req, res, next) => Card.findByIdAndUpdate(
+  req.params.cardId,
+  { $addToSet: { likes: req.user._id } },
+  { new: true },
+)
+  .orFail(() => {
+    throw new NotFoundErr('The requested card was not found');
+  })
+  .then((card) => res.status(200).send(card))
+  .catch((err) => {
+    if (err.name === 'CastError') next(new BadRequestErr('Invalid data'));
+    else next(err);
+  });
 
-const dislikeCard = (req, res, next) =>
-  Card.findByIdAndUpdate(
-    req.params.cardId,
-    { $pull: { likes: req.user._id } },
-    { new: true }
-  )
-    .orFail(() => {
-      throw new NotFoundErr('The requested card was not found');
-    })
-    .then((card) => res.status(200).send(card))
-    .catch((err) => {
-      if (err.name === 'CastError') next(new BadRequestErr('Invalid data'));
-      else next(err);
-    });
+const dislikeCard = (req, res, next) => Card.findByIdAndUpdate(
+  req.params.cardId,
+  { $pull: { likes: req.user._id } },
+  { new: true },
+)
+  .orFail(() => {
+    throw new NotFoundErr('The requested card was not found');
+  })
+  .then((card) => res.status(200).send(card))
+  .catch((err) => {
+    if (err.name === 'CastError') next(new BadRequestErr('Invalid data'));
+    else next(err);
+  });
 
 module.exports = {
   getCards,

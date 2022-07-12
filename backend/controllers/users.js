@@ -32,31 +32,27 @@ const getCurrentUser = (req, res, next) => {
 };
 
 const createUser = (req, res, next) => {
-  const { name, about, email, password } = req.body;
+  const {
+    name, about, email, password,
+  } = req.body;
   bcrypt
     .hash(password, 10)
-    .then((hash) =>
-      User.create({
-        name,
-        about,
-        email,
-        password: hash,
-      })
-    )
-    .then((user) =>
-      res.status(201).send({
-        _id: user._id,
-        name: user.name,
-        about: user.about,
-        email: user.email,
-        avatar: user.avatar,
-      })
-    )
+    .then((hash) => User.create({
+      name,
+      about,
+      email,
+      password: hash,
+    }))
+    .then((user) => res.status(201).send({
+      _id: user._id,
+      name: user.name,
+      about: user.about,
+      email: user.email,
+      avatar: user.avatar,
+    }))
     .catch((error) => {
-      if (error.name === 'ValidationError')
-        next(new BadRequestErr('Validation failed. Check your request.'));
-      else if (error.name === 'MongoError' || error.code === 11000)
-        next(new EmailConflictErr('User with this email already exists.'));
+      if (error.name === 'ValidationError') next(new BadRequestErr('Validation failed. Check your request.'));
+      else if (error.name === 'MongoError' || error.code === 11000) next(new EmailConflictErr('User with this email already exists.'));
       else next(error);
     });
 };
@@ -66,7 +62,7 @@ const updateUserProfile = (req, res, next) => {
   User.findByIdAndUpdate(
     req.user._id,
     { name, about },
-    { new: true, runValidators: true }
+    { new: true, runValidators: true },
   )
     .orFail(() => {
       throw new NotFoundErr('User not found.');
@@ -75,8 +71,7 @@ const updateUserProfile = (req, res, next) => {
       res.status(200).send(user);
     })
     .catch((error) => {
-      if (error.name === 'ValidationError')
-        next(new BadRequestErr('Validation failed. Check your request.'));
+      if (error.name === 'ValidationError') next(new BadRequestErr('Validation failed. Check your request.'));
       else next(error);
     });
 };
@@ -86,7 +81,7 @@ const updateUserAvatar = (req, res, next) => {
   User.findByIdAndUpdate(
     req.user._id,
     { avatar },
-    { new: true, runValidators: true }
+    { new: true, runValidators: true },
   )
     .orFail(() => {
       throw new NotFoundErr('User not found.');
@@ -95,8 +90,7 @@ const updateUserAvatar = (req, res, next) => {
       res.status(200).send(user);
     })
     .catch((error) => {
-      if (error.name === 'ValidationError')
-        next(new BadRequestErr('Validation failed. Check your request.'));
+      if (error.name === 'ValidationError') next(new BadRequestErr('Validation failed. Check your request.'));
       else next(error);
     });
 };
@@ -111,7 +105,7 @@ const login = (req, res, next) => {
       const token = jwt.sign(
         { _id: user._id },
         NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
-        { expiresIn: '7d' }
+        { expiresIn: '7d' },
       );
       res
         .cookie('jwt', token, {

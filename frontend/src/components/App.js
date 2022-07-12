@@ -352,7 +352,7 @@ function App() {
           onPopupClick={handlePopupClick}
         />
         {isUserDetailsOpen && isMobileSized && (
-          <UserDetails onLogout={handleLogout} />
+          <UserDetails handleLogout={handleLogout} />
         )}
         <Header
           isLoggedIn={isLoggedIn}
