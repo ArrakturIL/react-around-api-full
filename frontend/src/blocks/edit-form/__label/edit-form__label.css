@@ -1,9 +1,0 @@
-.edit-form__label {
-    display: flex;
-    flex-direction: column;
-    position: relative;
-}
-
-.edit-form__label:first-of-type {
-    margin-top: 54px;
-}
